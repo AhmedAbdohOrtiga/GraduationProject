@@ -27,11 +27,11 @@ unsigned Node::get_level(){
 	return level;
 }
 
-CvMat* Node::get_data()
+Mat* Node::get_data()
 {
 	return NULL;
 }
-float Node::predict(const CvMat* samples,CvMat* results)
+unsigned int Node::predict(const cv::Mat sample,cv::Mat* results)
 {
 	return 0;
 }

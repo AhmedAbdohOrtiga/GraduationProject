@@ -8,15 +8,15 @@
 #ifndef NODE_H_
 #define NODE_H_
 #include <opencv2/core/core.hpp>
-
+using namespace cv;
 class Node {
 public:
 	long long get_left_child();
 	long long get_right_child();
 	unsigned int get_level();
 	long long get_num();
-	virtual CvMat* get_data();
-	virtual float predict(const CvMat* samples,CvMat* results);
+	virtual Mat* get_data();
+	virtual unsigned int predict(Mat sample,Mat* results);
 	virtual ~Node();
 protected :
 	long long num;

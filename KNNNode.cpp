@@ -1,25 +1,33 @@
 #include "KNNNode.h"
 #include <fstream>
 #include <sstream>
+#include <opencv2/ml/ml.hpp>
 
-KNN_Node::KNN_Node(unsigned _k,long long _num,long label) {
+
+KNN_Node::KNN_Node(unsigned _k,long long _num,long _label,Mat* _data) {
 	left = 0;
 	num = _num;
 	right = 0;
 	level = 0;
+	label = _label;
+	data = _data;
 	k = _k;
-	std::ifstream f;
-	std::stringstream ss;
-	std::string strnum;
-	ss << num;
-	ss >> strnum;
-	std::vector<CvMat> data;
 
+	// TODO serialize or in other words save this member variables
 }
 
-float KNN_Node::predict(const CvMat* samples,CvMat* results)
+Mat* KNN_Node::get_data()
 {
-	return knn.find_nearest(samples,k,results);
+	return data;
+}
+
+unsigned int KNN_Node::predict(const cv::Mat sample,cv::Mat* results)
+{
+	CvKNearest knn;
+	Mat labels (data->rows,1,label);
+	knn.train(*data,labels,Mat(),false,k);
+	knn.find_nearest(sample,k,results);
+	return label;
 }
 
 KNN_Node::~KNN_Node() {
