@@ -8,6 +8,7 @@
 #ifndef NODE_H_
 #define NODE_H_
 #include <opencv2/core/core.hpp>
+#include <opencv2/ml/ml.hpp>
 using namespace cv;
 class Node {
 public:

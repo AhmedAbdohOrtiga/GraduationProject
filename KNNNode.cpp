@@ -1,7 +1,4 @@
 #include "KNNNode.h"
-#include <fstream>
-#include <sstream>
-#include <opencv2/ml/ml.hpp>
 
 
 KNN_Node::KNN_Node(unsigned _k,long long _num,long _label,Mat* _data) {
@@ -13,7 +10,7 @@ KNN_Node::KNN_Node(unsigned _k,long long _num,long _label,Mat* _data) {
 	data = _data;
 	k = _k;
 
-	// TODO serialize or in other words save this member variables
+	// TODO serialize or in other words save this member variables(data and the rest)
 }
 
 Mat* KNN_Node::get_data()
@@ -21,7 +18,7 @@ Mat* KNN_Node::get_data()
 	return data;
 }
 
-unsigned int KNN_Node::predict(const cv::Mat sample,cv::Mat* results)
+unsigned int KNN_Node::predict(const Mat sample,Mat* results)
 {
 	CvKNearest knn;
 	Mat labels (data->rows,1,label);

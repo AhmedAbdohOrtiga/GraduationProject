@@ -31,7 +31,7 @@ Mat* Node::get_data()
 {
 	return NULL;
 }
-unsigned int Node::predict(const cv::Mat sample,cv::Mat* results)
+unsigned int Node::predict(const Mat sample,Mat* results)
 {
 	return 0;
 }
