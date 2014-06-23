@@ -11,6 +11,11 @@
 #define LEFT 0
 #define RIGHT 1
 
+SVM_Node::SVM_Node()
+{
+
+}
+
 SVM_Node::SVM_Node(Node* _left,Node* _right,long long _num) {
 	num = _num;
 	left = _left->get_num();
@@ -32,9 +37,25 @@ SVM_Node::SVM_Node(Node* _left,Node* _right,long long _num) {
 
 	// TODO serialize : save svm model and other members.
 
+	FileStorage* f = serialize();
+	*f << "left" << left;
+	*f << "right" << right;
+	*f << "feature_size" << feature_size;
+	*f << "data_type" << data_type;
+	f->release();
+
+	std::ostringstream ff;
+	ff << BASEPATH;
+	ff <<'/';
+	ff << num;
+	ff << "/model.xml";
+
+	svm.save(ff.str().c_str());
+
+
 }
 
-unsigned int SVM_Node::predict(const Mat sample,Mat* results)
+unsigned int SVM_Node::predict(const Mat sample,float& dist)
 {
 	return (unsigned int)svm.predict(sample);
 }
@@ -42,16 +63,19 @@ unsigned int SVM_Node::predict(const Mat sample,Mat* results)
 Mat* SVM_Node::get_data()
 {
 	unsigned sv_count = svm.get_support_vector_count();
-	const float** vecs = (const float**)(malloc(sv_count*sizeof(const float*))) ;
+	float* vecs = (float*)(malloc(sv_count*feature_size*sizeof(float))) ;
 	for(unsigned int i =0;i<sv_count;++i)
 	{
 		const float* vec = svm.get_support_vector(i);
-		vecs[i]=vec;
+		for(int j = 0;j<feature_size;++j)
+		{
+			vecs[i*sv_count+j]=vec[i];
+		}
 	}
 
-	Mat vectors(sv_count,feature_size,data_type,&vecs);
+	Mat* vectors = new Mat(sv_count,feature_size,data_type,vecs);
 
-	return &vectors;
+	return vectors;
 }
 
 SVM_Node::~SVM_Node() {

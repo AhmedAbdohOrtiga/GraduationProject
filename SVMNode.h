@@ -12,12 +12,12 @@
 class SVM_Node : public Node{
 public:
 	SVM_Node(Node* _left,Node* _right,long long _num);
-	unsigned int predict(const Mat sample,Mat* results);
+	unsigned int predict(const Mat sample,float& dist);
 	Mat* get_data();
 	virtual ~SVM_Node();
-private:
+	SVM_Node();
 	CvSVM svm;
-	unsigned feature_size;
+	int feature_size;
 	int data_type;
 
 };
