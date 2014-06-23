@@ -29,7 +29,7 @@ public:
 	 **@param test: matrix (image) to be classified
 	 **@return the id of leaf node which perdicted
 	 **/
-	int perdict(Mat* test);
+	int perdict(Mat test);
 private:
 	//map between level and id
 	map<int, int> level_id;
