@@ -10,6 +10,7 @@
 using namespace std;
 #include <vector>
 #include "Node.h"
+#include <map>
 
 class Bolinomial {
 public:
@@ -22,21 +23,16 @@ public:
 	/**consolidate
 	 **@param node: node to be added
 	 **node added and tree consolidated
-	 */
+	 **/
 	void consolidate(Node* node);
-	/**reset
-	 ** reset add and remove vector to consolidate again
+	/**perdict
+	 **@param test: matrix (image) to be classified
+	 **@return the id of leaf node which perdicted
 	 **/
-	void reset();
-	/**adjustPolynomial
-	 ** use add and remove vectors to adjust new polynomial queue
-	 **/
-	void adjustPolynomial();
+	int perdict(Mat* test);
 private:
-	//nodes that should be added because of add new node (while consolidate)
-	vector<int> add;
-	//nodes that should be removed because of merging 2 nodes (while consolidate)
-	vector<int> remove;
+	//map between level and id
+	map<int, int> level_id;
 };
 
 #endif /* BOLINOMIAL_H_ */
