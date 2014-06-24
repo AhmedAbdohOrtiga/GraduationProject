@@ -28,8 +28,8 @@ SVM_Node::SVM_Node(Node* _left,Node* _right,long long _num) {
 	feature_size = data.cols;
 	data_type = data.type();
 
-	Mat labels_left(data_left->rows,1,data_left->type(),LEFT);
-	Mat labels_right(data_right->rows,1,data_right->type(),RIGHT);
+	Mat labels_left(data_left->rows,1,data_left->type(),(float)LEFT);
+	Mat labels_right(data_right->rows,1,data_right->type(),(float)RIGHT);
 	Mat labels;
 	vconcat(labels_left,labels_right,labels);
 

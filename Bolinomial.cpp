@@ -8,13 +8,14 @@
 #include "Bolinomial.h"
 #include <fstream>
 #include "SVMNode.h"
+#include "KNNNode.h"
 #include "Node.h"
 #include <climits>
 
 Node* getNodeFromDisk(int id);
 int levelOfNode(int id);
 Bolinomial::Bolinomial() {
-	ifstream tree("binomial/data.txt");
+	ifstream tree("data.txt");
 	if (tree) {
 		int id;
 		while (tree >> id) {
@@ -22,7 +23,7 @@ Bolinomial::Bolinomial() {
 			level_id[levelOfNode(id)] = Node::getInstance(id);
 		}
 	} else {
-		ofstream file("binomial/data.txt");
+		ofstream file("data.txt");
 	}
 
 	tree.close();
@@ -41,10 +42,11 @@ Bolinomial::~Bolinomial() {
 void Bolinomial::consolidate(Node* node) {
 	while (level_id.find(node->get_level()) != level_id.end()) {
 		//merge 2 nodes
+		int lev = node->get_level();
 		node = new SVM_Node(level_id[node->get_level()], node,
 				rand() % ULLONG_MAX);
 		//remove node
-		level_id.erase(node->get_level());
+		level_id.erase(lev);
 	}
 	level_id[node->get_level()] = node;
 
@@ -55,9 +57,9 @@ int Bolinomial::perdict(Mat test) {
 	float min = ULLONG_MAX;
 	for (map<int, Node*>::iterator it = level_id.begin(); it != level_id.end();
 			++it) {
-		Node* node = level_id[it->second];
+		Node* node = it->second;
 		float val;
-		while (node->get_level() != 1) { //not leaf
+		while (node->get_level() != 0) { //not leaf
 			if (node->predict(test, val) == 0) { //go left
 				node = Node::getInstance(node->get_left_child());
 			} else {

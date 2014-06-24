@@ -18,12 +18,12 @@ using namespace cv;
 class Node {
 public:
 	long long get_left_child();
+	static Node* getInstance(long long num);
 	long long get_right_child();
 	unsigned int get_level();
 	long long get_num();
-	virtual Mat* get_data();
-	virtual unsigned int predict(Mat sample,float& dist);
-	static Node* getInstance(long long num);
+	virtual Mat* get_data()=0;
+	virtual unsigned int predict(Mat sample,float& dist)=0;
 	virtual ~Node();
 protected :
 	double num;
