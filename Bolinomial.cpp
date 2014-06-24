@@ -91,6 +91,6 @@ Node* getNodeFromDisk(int id) {
 	//it's supposed to read whole node according to how we'll save it
 	//if level 1 return knn node, else return svm
 	Node* returnNode = Node::getInstance(id);
-	return returnNode;	//to skip warning
+	return returnNode;			//to skip warning
 }
 
