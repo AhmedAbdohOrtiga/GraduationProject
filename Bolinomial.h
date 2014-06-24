@@ -14,9 +14,10 @@ using namespace std;
 
 class Bolinomial {
 public:
+	Bolinomial();
 	/**@Constructor
 	 **/
-	Bolinomial();
+	Bolinomial(char* name);
 	/**@Destructor
 	 **/
 	virtual ~Bolinomial();
@@ -32,7 +33,7 @@ public:
 	int perdict(Mat test);
 private:
 	//map between level and id
-	map<int, int> level_id;
+	map<int, Node*> level_id;
 };
 
 #endif /* BOLINOMIAL_H_ */

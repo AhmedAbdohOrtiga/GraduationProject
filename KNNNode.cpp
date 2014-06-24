@@ -16,6 +16,7 @@ KNN_Node::KNN_Node(unsigned _k,long long _num,long _label,Mat* _data) {
 	// TODO serialize or in other words save this member variables(data and the rest)
 	FileStorage* f = serialize();
 
+
 	*f << "label" << (double)label;
 	*f << "k" << (int)k;
 	*f << "data" << *data;
