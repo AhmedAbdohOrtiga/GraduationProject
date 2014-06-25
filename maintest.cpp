@@ -27,9 +27,11 @@ int main() {
 	KNN_Node* nc = new KNN_Node(2, rand() % ULLONG_MAX, 2, &mc);
 //	KNN_Node* nd = new KNN_Node(2, rand() % ULLONG_MAX, 3, &md);
 
+
 	bb->consolidate(na);
 	bb->consolidate(nb);
 	bb->consolidate(nc);
+
 //	bb->consolidate(nd);
 	bb->save();
 
@@ -41,6 +43,7 @@ int main() {
 	cout << bb->perdict(Mat(1, 3, CV_32FC1, t1)) << endl;
 	cout << bb->perdict(Mat(1, 3, CV_32FC1, t2)) << endl;
 	cout << bb->perdict(Mat(1, 3, CV_32FC1, t3)) << endl;
+
 	return 0;
 }
 

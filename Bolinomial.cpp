@@ -26,6 +26,7 @@ Bolinomial::Bolinomial() {
 		}
 	} else {
 		ofstream tree("data.txt");
+
 	}
 
 	tree.close();
