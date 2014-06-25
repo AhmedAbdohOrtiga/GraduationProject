@@ -31,6 +31,10 @@ public:
 	 **@return the id of leaf node which perdicted
 	 **/
 	int perdict(Mat test);
+	/**save
+	 **save the binomial to file after consolidation finish
+	 **/
+	void save();
 private:
 	//map between level and id
 	map<int, Node*> level_id;

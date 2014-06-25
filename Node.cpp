@@ -35,11 +35,10 @@ Node* Node::getInstance(long long num)
 	std::ostringstream f;
 	f << BASEPATH;
 	f<<'/';
-	f << num;
+	f << (double)num;
 	f <<"/attr.xml";
 	string attr = f.str();
 
-	Node* n;
 	FileStorage ff(attr,FileStorage::READ);
 	int lev = 0;
 
@@ -48,36 +47,40 @@ Node* Node::getInstance(long long num)
 
 	if(lev == 0)
 	{
-		KNN_Node nn;
+		KNN_Node* nn = new KNN_Node();
 
-		ff["num"] >>nn.num;
-		ff["k"] >> nn.k;
-		ff["data"] >> *(nn.data);
-		ff["label"] >> nn.label;
-		nn.left = 0;
-		nn.right = 0;
+		ff["num"] >>nn->num;
+		ff["k"] >> nn->k;
+		nn->data = new Mat();
+		ff["data"] >> *(nn->data);
 
-		n= &nn;
+		ff["label"] >> nn->label;
+		nn->left = 0;
+		nn->right = 0;
+		ff.release();
+		nn->level = lev;
+
+		return nn;
 	}
 	else
 	{
-		SVM_Node nn;
-		ff["num"] >> nn.num;
-		ff["left"] >> nn.left;
-		ff["right"] >> nn.right;
-		ff["data_type"] >> nn.data_type;
-		ff["feature_size"] >> nn.feature_size;
+		SVM_Node* nn = new SVM_Node();
+		ff["num"] >> nn->num;
+		ff["left"] >> nn->left;
+		ff["right"] >> nn->right;
+		ff["data_type"] >> nn->data_type;
+		ff["feature_size"] >> nn->feature_size;
 
 		std::ostringstream oss;
-		oss << BASEPATH << '/' << num << '/' << "model.xml";
+		oss << BASEPATH << '/' << (double) num << '/' << "model.xml";
+		nn->svm.load(oss.str().c_str());
+		ff.release();
+		nn->level = lev;
+		return nn;
 
-		nn.svm.load(oss.str().c_str());
-		n= &nn;
 	}
 
-	ff.release();
-	n->level = lev;
-	return n;
+
 }
 
 long long Node::get_left_child()
@@ -99,17 +102,17 @@ unsigned Node::get_level(){
 	return level;
 }
 
-Mat* Node::get_data()
-{
-	return NULL;
-}
+//Mat* Node::get_data()
+//{
+//	return NULL;
+//}
 
 
 
-unsigned int Node::predict(const Mat sample,float& dist)
-{
-	return 0;
-}
+//unsigned int Node::predict(const Mat sample,float& dist)
+//{
+//	return 0;
+//}
 Node::~Node()
 {
 

@@ -8,43 +8,50 @@
 #include "Bolinomial.h"
 #include <fstream>
 #include "SVMNode.h"
+#include "KNNNode.h"
 #include "Node.h"
-#include <climits>
+#include <stdlib.h>
 
 Node* getNodeFromDisk(int id);
-int levelOfNode(int id);
+
 Bolinomial::Bolinomial() {
-	ifstream tree("binomial/data.txt");
+	srand(time(NULL));
+	ifstream tree("data.txt");
 	if (tree) {
 		int id;
 		while (tree >> id) {
 			//(level,id)
-			level_id[levelOfNode(id)] = Node::getInstance(id);
+			Node* node = Node::getInstance(id);
+			level_id[node->get_level()] = node;
 		}
 	} else {
-		ofstream file("binomial/data.txt");
+		ofstream tree("data.txt");
 	}
 
 	tree.close();
 }
 
 Bolinomial::~Bolinomial() {
+	delete &level_id;
+}
+
+void Bolinomial::save() {
 	//write new binomial to file before destructionu
-	ofstream file("binomial/data.txt");
+	ofstream file("data.txt");
 	for (map<int, Node*>::iterator it = level_id.begin(); it != level_id.end();
 			++it) {
-		file << it->second;
+		file << it->second->get_num() << " ";
 	}
 	file.close();
-	delete &level_id;
 }
 void Bolinomial::consolidate(Node* node) {
 	while (level_id.find(node->get_level()) != level_id.end()) {
 		//merge 2 nodes
+		int lev = node->get_level();
 		node = new SVM_Node(level_id[node->get_level()], node,
 				rand() % ULLONG_MAX);
 		//remove node
-		level_id.erase(node->get_level());
+		level_id.erase(lev);
 	}
 	level_id[node->get_level()] = node;
 
@@ -55,9 +62,9 @@ int Bolinomial::perdict(Mat test) {
 	float min = ULLONG_MAX;
 	for (map<int, Node*>::iterator it = level_id.begin(); it != level_id.end();
 			++it) {
-		Node* node = level_id[it->second];
+		Node* node = it->second;
 		float val;
-		while (node->get_level() != 1) { //not leaf
+		while (node->get_level() != 0) { //not leaf
 			if (node->predict(test, val) == 0) { //go left
 				node = Node::getInstance(node->get_left_child());
 			} else {
@@ -69,18 +76,6 @@ int Bolinomial::perdict(Mat test) {
 			retId = id;
 	}
 	return retId;
-}
-
-/**levelOfNode
- **@param id identifier of node
- **@return value #of levels in node correspondence to id
- **/
-int levelOfNode(int id) {
-	fstream info("id\info.txt", std::ios_base::in);
-	int levels;
-	info >> levels;
-	info.close();
-	return levels;
 }
 
 /** getNodeFromDisk

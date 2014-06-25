@@ -33,7 +33,7 @@ Mat* KNN_Node::get_data()
 unsigned int KNN_Node::predict(const Mat sample,float& dis)
 {
 	CvKNearest knn;
-	Mat labels (data->rows,1,label);
+	Mat labels (data->rows,1,CV_32FC1,label);
 	knn.train(*data,labels,Mat(),false,k);
 	Mat dists;
 	Mat r;

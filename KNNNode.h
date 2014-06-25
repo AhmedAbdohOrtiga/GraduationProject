@@ -13,8 +13,8 @@ class KNN_Node : public Node
 {
 public:
 	KNN_Node(unsigned k,long long _num,long label ,Mat* _data);
-	unsigned int predict(const Mat sample,float& dis);
-	Mat* get_data();
+	virtual unsigned int predict(const Mat sample,float& dis);
+	virtual Mat* get_data();
 	virtual ~KNN_Node();
 	KNN_Node();
 	Mat* data;
